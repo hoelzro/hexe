@@ -36,6 +36,10 @@ class Hexe::Connection::IPCMessage {
         return $result;
     }
 
+    method hash {
+        return %!message;
+    }
+
     method !encoded-length(Int $length is copy) {
         my @chars;
 
