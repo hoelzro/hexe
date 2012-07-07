@@ -22,7 +22,7 @@ class Hexe::Connection::IPCMessage {
         }.gist();
     }
 
-    method write(IO $h) {
+    method write($h) {
         my $buf = to-json({
             :$!command,
             :@!args,
@@ -32,7 +32,7 @@ class Hexe::Connection::IPCMessage {
         $h.write($length ~ $buf);
     }
 
-    method read(IO $h) {
+    method read($h) {
         my $length = $h.read(4).decode;
            $length = self!decoded-length($length);
 
