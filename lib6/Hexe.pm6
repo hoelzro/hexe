@@ -12,6 +12,8 @@ class Hexe {
         $!loop        = Hexe::EventLoop.new;
         %config<loop> = $!loop;
         $!connection  = Hexe::Connection.new(|%config);
+
+        $!connection.connect;
     }
 
     method run {
