@@ -44,4 +44,17 @@ class Hexe::Connection {
         my $cmd = Hexe::Connection::IPCMessage.new(:command($name), :@args);
         $cmd.write($!sock);
     }
+
+    method !process-message($msg) {
+        my %hash-form = $msg.hash;
+
+        my $signal-name = %hash-form<signal>;
+        $signal-name .= subst(/_/, '-', :g);
+
+        my $callbacks = %!callbacks{$signal-name};
+
+        for $callbacks.list -> $callback {
+            $callback.();
+        }
+    }
 }
