@@ -17,4 +17,11 @@ class Hexe {
     method run {
         $!loop.go;
     }
+
+    method !connection-config {
+        return (
+            :jid<bot@localhost/Bot>,
+            :password<abc123>,
+        );
+    }
 }
