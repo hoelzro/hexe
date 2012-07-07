@@ -15,6 +15,6 @@ class Hexe {
     }
 
     method run {
-        $!loop.run;
+        $!loop.go;
     }
 }
