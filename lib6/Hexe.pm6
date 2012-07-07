@@ -13,6 +13,14 @@ class Hexe {
         %config<loop> = $!loop;
         $!connection  = Hexe::Connection.new(|%config);
 
+        $!connection.listen-for(message => -> $msg {
+            say $msg;
+        });
+
+        $!connection.listen-for(session-ready => {
+            say 'connected!';
+        });
+
         $!connection.connect;
     }
 
