@@ -188,7 +188,11 @@ sub _get_converter {
         return sub {
             my ( $self, $delayed ) = @_;
 
-            return $self->_node_to_struct($delayed->xml_node);
+            my $node = $self->_node_to_struct($delayed->xml_node);
+
+            $node->{'_type'} = 'Stanza';
+
+            return $node;
         };
     }
 
