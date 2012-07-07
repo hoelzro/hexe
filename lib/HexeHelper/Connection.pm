@@ -181,8 +181,31 @@ sub _command_create {
     $self->_setup_xmpp_handlers;
 }
 
+sub _get_converter {
+    my ( $self, $type ) = @_;
+
+    if($type->isa('AnyEvent::XMPP::IM::Delayed')) {
+        return sub {
+            my ( $self, $delayed ) = @_;
+
+            return $self->_node_to_struct($delayed->xml_node);
+        };
+    }
+
+    return;
+}
+
 sub _forward_signal {
     my ( $self, $signal_name, @args ) = @_;
+
+    foreach my $arg (@args) {
+        my $type = ref($arg);
+        my $converter = $self->_get_converter($type);
+
+        next unless $converter;
+
+        $arg = $self->$converter($arg);
+    }
 
     my $json = $self->json->encode({
 	signal  => $signal_name,
