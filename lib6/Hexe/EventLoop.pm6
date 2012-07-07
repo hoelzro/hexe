@@ -37,6 +37,16 @@ class Hexe::EventLoop {
         MuEvent::timer(|%params);
     }
 
+    method io(*%params) {
+        if %params.delete('callback') -> $callback {
+            %params{'cb'} = $callback;
+        }
+        if %params.delete('fh') -> $fh {
+            %params<socket> = $fh;
+        }
+        MuEvent::socket(|%params);
+    }
+
     method stop {
         die 'Hexe::EventLoop';
     }
