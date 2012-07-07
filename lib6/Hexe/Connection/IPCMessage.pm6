@@ -6,27 +6,20 @@ class Hexe::Connection::IPCMessage {
     constant @base64-chars   = ( ('A' .. 'Z' ), ('a' .. 'z'), ('0' .. '9'), '+', '/');
     constant %base64-mapping = (map -> $value { @base64-chars[$value].ord => $value }, |(0 .. ^@base64-chars.elems -1).flat).hash;
 
-    has $!command;
-    has @!args;
+    has %!message;
 
-    method new($command, *@args) {
-        return self.bless(*, :$command, :@args);
+    method new(*%args) {
+        return self.bless(*, :message(%args));
     }
 
-    submethod BUILD(:$!command, :@!args) {}
+    submethod BUILD(:%!message) {}
 
     method gist {
-        return {
-            :$!command,
-            :@!args,
-        }.gist();
+        return %!message.gist();
     }
 
     method write($h) {
-        my $buf = to-json({
-            :$!command,
-            :@!args,
-        }).encode;
+        my $buf = to-json(%!message).encode;
 
         my $length = self!encoded-length($buf.bytes);
         $h.write($length ~ $buf);
@@ -39,7 +32,7 @@ class Hexe::Connection::IPCMessage {
         my $body   = $h.read($length).decode;
            $body   = from-json($body);
 
-        my $result = self.bless(*, |%$body);
+        my $result = self.bless(*, :message(%$body));
         return $result;
     }
 

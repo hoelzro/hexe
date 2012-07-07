@@ -20,7 +20,8 @@ class Hexe::Connection {
                 self!process-message($msg);
             }),
         );
-        my $cmd = Hexe::Connection::IPCMessage.new('create', |(%extra-params.pairs>>.kv.list));
+        my @args = %extra-params.pairs>>.kv.list;
+        my $cmd  = Hexe::Connection::IPCMessage.new(:command<create>, :@args);
         $cmd.write($!sock);
         # XXX spawn child here
     }
@@ -40,7 +41,7 @@ class Hexe::Connection {
     }
 
     method !send-command(Str $name, *@args) {
-        my $cmd = Hexe::Connection::IPCMessage.new($name, |@args);
+        my $cmd = Hexe::Connection::IPCMessage.new(:command($name), :@args);
         $cmd.write($!sock);
     }
 }
