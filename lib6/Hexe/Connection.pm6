@@ -51,10 +51,12 @@ class Hexe::Connection {
         my $signal-name = %hash-form<signal>;
         $signal-name .= subst(/_/, '-', :g);
 
+        my @payload = %hash-form<payload>.list;
+
         my $callbacks = %!callbacks{$signal-name};
 
         for $callbacks.list -> $callback {
-            $callback.();
+            $callback.(|@payload.list);
         }
     }
 }
