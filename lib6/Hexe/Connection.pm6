@@ -6,10 +6,10 @@ class Hexe::Connection {
     has $!sock;
 
     method new(*%params) {
-        return self.bless(*);
+        return self.bless(*, |%params);
     }
 
-    submethod BUILD(:$!loop) {
+    submethod BUILD(:$!loop, *%extra-params) {
         # XXX it would be nice if this generated dynamic ports
         $!sock = IO::Socket::INET.new(:host<localhost>, :port(9001));
         $!loop.io(
@@ -20,6 +20,8 @@ class Hexe::Connection {
                 self!process-message($msg);
             }),
         );
+        my $cmd = Hexe::Connection::IPCMessage.new('create', |(%extra-params.pairs>>.kv.list));
+        $cmd.write($!sock);
         # XXX spawn child here
     }
 
