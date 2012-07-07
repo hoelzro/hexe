@@ -1,4 +1,5 @@
 use Hexe::Connection::IPCMessage;
+use Hexe::Stanza;
 
 class Hexe::Connection {
     has %!callbacks;
@@ -45,6 +46,17 @@ class Hexe::Connection {
         $cmd.write($!sock);
     }
 
+    method !convert-payload($obj) {
+        if $obj ~~ Hash && $obj.exists('_type') {
+            given $obj<_type> {
+                when 'Stanza' {
+                    return Hexe::Stanza.create($obj);
+                }
+            }
+        }
+        return $obj;
+    }
+
     method !process-message($msg) {
         my %hash-form = $msg.hash;
 
@@ -52,6 +64,7 @@ class Hexe::Connection {
         $signal-name .= subst(/_/, '-', :g);
 
         my @payload = %hash-form<payload>.list;
+        @payload    = @payload.map({ self!convert-payload($_) });
 
         my $callbacks = %!callbacks{$signal-name};
 
