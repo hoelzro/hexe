@@ -127,7 +127,6 @@ sub _handle_error {
     my ( $self, $error ) = @_;
 
     say 'error: ' . $error->string;
-    $self->stop;
 }
 
 sub _handle_debug_recv {
