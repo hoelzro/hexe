@@ -44,6 +44,6 @@ multi dump(Any:U $, Int $ = 0) {
     return 'undefined'
 }
 
-multi dump(Any $obj, Int $ = 0) {
+multi dump(Any:D $obj, Int $ = 0) {
     die "Cannot dump objects of type {$obj.WHAT.gist}";
 }
