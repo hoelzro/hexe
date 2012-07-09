@@ -58,21 +58,25 @@ class Hexe::Stanza::Presence does StanzaLike {
     }
 
     method gist {
-        my @pieces = ("type='$!type'", "from='$!from'");
+        if self.defined {
+            my @pieces = ("type='$!type'", "from='$!from'");
 
-        if $!availability.defined {
-            @pieces.push("availability='$!availability'");
+            if $!availability.defined {
+                @pieces.push("availability='$!availability'");
+            }
+
+            if $!status.defined {
+                @pieces.push("status='$!status'");
+            }
+
+            if $!priority.defined {
+                @pieces.push("priority=$!priority");
+            }
+
+            return 'presence: ' ~ @pieces.join(', ');
+        } else {
+            nextsame;
         }
-
-        if $!status.defined {
-            @pieces.push("status='$!status'");
-        }
-
-        if $!priority.defined {
-            @pieces.push("priority=$!priority");
-        }
-
-        return 'presence: ' ~ @pieces.join(', ');
     }
 }
 
@@ -98,7 +102,11 @@ class Hexe::Stanza::Message does StanzaLike {
     }
 
     method gist {
-        return "message: type='$!type', from='$!from', to='$!to', body = '$!body'";
+        if self.defined {
+            return "message: type='$!type', from='$!from', to='$!to', body = '$!body'";
+        } else {
+            nextsame;
+        }
     }
 }
 
