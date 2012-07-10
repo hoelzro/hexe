@@ -207,6 +207,9 @@ sub _command_create {
 sub _get_converter {
     my ( $self, $type ) = @_;
 
+    return unless $type;
+    return if $type eq 'ARRAY' || $type eq 'HASH';
+
     if($type->isa('AnyEvent::XMPP::IM::Delayed')) {
         return sub {
             my ( $self, $delayed ) = @_;
@@ -216,6 +219,18 @@ sub _get_converter {
             $node->{'_type'} = 'Stanza';
 
             return $node;
+        };
+    }
+
+    if($type->isa('AnyEvent::XMPP::Ext::MUC::Room')) {
+        return sub {
+            my ( $self, $room ) = @_;
+
+            return {
+                _type => 'Room',
+                jid   => $room->jid,
+                me    => $room->nick_jid,
+            };
         };
     }
 
