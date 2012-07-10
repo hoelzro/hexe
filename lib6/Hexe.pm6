@@ -2,6 +2,7 @@ use v6;
 
 use Hexe::EventLoop;
 use Hexe::Connection;
+use JSON::Tiny;
 
 class Hexe {
     has $!connection;
@@ -29,9 +30,11 @@ class Hexe {
     }
 
     method !connection-config {
-        return (
-            :jid<bot@localhost/Bot>,
-            :password<abc123>,
-        );
+        my $config-file = 'config.json';
+        unless $config-file.IO ~~ :r {
+            die "Unable to read '$config-file'";
+        }
+        my $config = slurp($config-file);
+        return from-json($config);
     }
 }
