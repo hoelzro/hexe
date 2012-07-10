@@ -43,6 +43,10 @@ has registrations => (
     },
 );
 
+has muc => (
+    is => 'rw',
+);
+
 sub _mark_as_registered {
     my ( $self, $signal_name ) = @_;
 
@@ -110,6 +114,8 @@ sub _setup_xmpp_extensions {
 
     $connection->add_extension($disco);
     $connection->add_extension($muc);
+
+    $self->muc($muc);
 }
 
 sub _setup_xmpp_handlers {
