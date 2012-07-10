@@ -241,7 +241,7 @@ sub _forward_signal {
     my ( $self, $signal_name, @args ) = @_;
 
     foreach my $arg (@args) {
-        my $type = ref($arg);
+        my $type      = ref($arg);
         my $converter = $self->_get_converter($type);
 
         next unless $converter;
