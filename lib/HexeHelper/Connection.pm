@@ -97,6 +97,21 @@ sub _node_to_struct {
     };
 }
 
+sub _setup_xmpp_extensions {
+    my ( $self ) = @_;
+
+    my $connection = $self->connection;
+
+    require AnyEvent::XMPP::Ext::Disco;
+    require AnyEvent::XMPP::Ext::MUC;
+
+    my $disco = AnyEvent::XMPP::Ext::Disco->new;
+    my $muc   = AnyEvent::XMPP::Ext::MUC->new(disco => $disco);
+
+    $connection->add_extension($disco);
+    $connection->add_extension($muc);
+}
+
 sub _setup_xmpp_handlers {
     my ( $self ) = @_;
 
@@ -178,6 +193,7 @@ sub _command_create {
     my ( $self, %params ) = @_;
 
     $self->connection(AnyEvent::XMPP::IM::Connection->new(%params));
+    $self->_setup_xmpp_extensions;
     $self->_setup_xmpp_handlers;
 }
 
