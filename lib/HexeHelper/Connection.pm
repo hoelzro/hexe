@@ -270,11 +270,19 @@ sub _command_listen_for {
 
     $self->_mark_as_registered($signal_name);
 
-    $self->connection->reg_cb($signal_name, sub {
-	my ( undef, @args ) = @_;
+    if($signal_name =~ /^muc_(.*)/) {
+        $self->muc->reg_cb($1, sub {
+            my ( undef, @args ) = @_;
 
-	$self->_forward_signal($signal_name, @args);
-    });
+            $self->_forward_signal($signal_name, @args);
+        });
+    } else {
+        $self->connection->reg_cb($signal_name, sub {
+            my ( undef, @args ) = @_;
+
+            $self->_forward_signal($signal_name, @args);
+        });
+    }
 }
 
 sub _command_connect {
