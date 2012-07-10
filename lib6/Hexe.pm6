@@ -20,6 +20,7 @@ class Hexe {
 
         $!connection.listen-for(session-ready => {
             say 'connected!';
+            $!connection.join-room('test@conference.localhost');
         });
 
         $!connection.connect;
