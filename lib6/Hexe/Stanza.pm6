@@ -83,10 +83,10 @@ class Hexe::Stanza::Presence does StanzaLike {
 subset Hexe::Stanza::Message::Type of Str where 'chat'|'error'|'groupchat'|'headline'|'normal';
 
 class Hexe::Stanza::Message does StanzaLike {
-    has Hexe::Stanza::Message::Type $!type;
-    has Hexe::JID $!from;
-    has Hexe::JID $!to;
-    has Str $!body;
+    has Hexe::Stanza::Message::Type $.type;
+    has Hexe::JID $.from;
+    has Hexe::JID $.to;
+    has Str $.body;
 
     method new(%obj) {
         my %params = :type(%obj<type>), :from(%obj<from>), :to(%obj<to>);
