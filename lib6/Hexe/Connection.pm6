@@ -41,6 +41,10 @@ class Hexe::Connection {
         self!send-command('connect');
     }
 
+    method join-room(Str $room-name) {
+        self!send-command('join-room', 'name', $room-name);
+    }
+
     method !send-command(Str $name, *@args) {
         my $cmd = Hexe::Connection::IPCMessage.new(:command($name), :@args);
         $cmd.write($!sock);
