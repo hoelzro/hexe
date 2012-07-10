@@ -23,6 +23,10 @@ class Hexe {
             $!connection.join-room('test@conference.localhost');
         });
 
+        $!connection.listen-for(muc-message => -> $room, $msg, $is-echo {
+            say $msg.body;
+        });
+
         $!connection.connect;
     }
 
