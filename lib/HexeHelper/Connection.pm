@@ -5,6 +5,7 @@ use Moose;
 use AnyEvent;
 use AnyEvent::Handle;
 use AnyEvent::XMPP::IM::Connection;
+use AnyEvent::XMPP::Util qw(split_jid);
 use Encode qw(encode_utf8 decode_utf8);
 use JSON;
 use MIME::Base64 qw(decode_base64 encode_base64);
@@ -265,6 +266,14 @@ sub _command_connect {
     my ( $self ) = @_;
 
     $self->connection->connect;
+}
+
+sub _command_join_room {
+    my ( $self, %params ) = @_;
+
+    my ( $nick ) = split_jid($self->connection->jid);
+
+    $self->muc->join_room($self->connection, $params{'name'}, $nick);
 }
 
 __PACKAGE__->meta->make_immutable;
