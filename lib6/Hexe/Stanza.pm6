@@ -82,21 +82,56 @@ class Hexe::Stanza::Presence does StanzaLike {
 
 subset Hexe::Stanza::Message::Type of Str where 'chat'|'error'|'groupchat'|'headline'|'normal';
 
+my regex delay-regex {
+    $<year>=(\d ** 4)
+    '-'
+    $<month>=(\d ** 2)
+    '-'
+    $<day>=(\d ** 2)
+    T
+    $<hour>=(\d ** 2)
+    ':'
+    $<minute>=(\d ** 2)
+    ':'
+    $<second>=(\d ** 2)
+    Z
+}
+
 class Hexe::Stanza::Message does StanzaLike {
     has Hexe::Stanza::Message::Type $.type;
     has Hexe::JID $.from;
     has Hexe::JID $.to;
+    has DateTime $.delay;
     has Str $.body;
 
     method new(%obj) {
         my %params = :type(%obj<type>), :from(%obj<from>), :to(%obj<to>);
 
         %params<body> = self.find-node(%obj, :_tag<body>)<_text>;
+        my $delay     = self.find-node(%obj, :_tag<delay>)<stamp>;
+
+        if $delay.defined {
+            if $delay ~~ /^ <delay-regex> $/ -> $match {
+                my $delay-part = $match<delay-regex>;
+                my @keys       = qw<year month day hour minute second>;
+                my %params;
+
+                for @keys -> $k {
+                    my $value   = $delay-part{$k}.Int;
+                    %params{$k} = $value;
+                }
+
+                $delay = DateTime.new(|%params);
+            }
+        } else {
+            $delay = DateTime;
+        }
+        %params<delay> = $delay;
 
         return self.bless(*, |%params);
     }
 
-    submethod BUILD(:$!type, Str :$from, Str :$to, Str :$!body) {
+    submethod BUILD(:$!type, Str :$from, Str :$to, Str :$!body, DateTime :$!delay) {
         $!from = Hexe::JID.from-string($from);
         $!to   = Hexe::JID.from-string($to);
     }
