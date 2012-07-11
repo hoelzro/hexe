@@ -24,7 +24,9 @@ class Hexe {
         });
 
         $!connection.listen-for(muc-message => -> $room, $msg, $is-echo {
-            say $msg.body;
+            unless $msg.is-delayed {
+                say $msg.body;
+            }
         });
 
         $!connection.connect;
