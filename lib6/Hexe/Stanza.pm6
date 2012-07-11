@@ -143,6 +143,10 @@ class Hexe::Stanza::Message does StanzaLike {
             nextsame;
         }
     }
+
+    method is-delayed {
+        return $!delay.defined;
+    }
 }
 
 class Hexe::Stanza {
