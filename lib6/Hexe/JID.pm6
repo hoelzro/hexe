@@ -27,6 +27,8 @@ class Hexe::JID {
     submethod BUILD(Str :$!domain!, Str :$!node, Str :$!resource) {}
 
     method Str {
+        return $?CLASS.^name unless self.defined;
+
         if $!resource.defined {
             return sprintf('%s@%s/%s', $!node, $!domain, $!resource);
         } else {
