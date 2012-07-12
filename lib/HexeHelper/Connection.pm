@@ -299,6 +299,13 @@ sub _command_join_room {
     $self->muc->join_room($self->connection, $params{'name'}, $nick);
 }
 
+sub _command_send_message {
+    my ( $self, $msg ) = @_;
+
+    $msg = AnyEvent::XMPP::IM::Message->new(%$msg);
+    $msg->send($self->connection);
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;
