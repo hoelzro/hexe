@@ -14,19 +14,20 @@ class Hexe {
         %config<loop> = $!loop;
         $!connection  = Hexe::Connection.new(|%config);
 
-        $!connection.listen-for(message => -> $msg {
-            say $msg;
-        });
-
         $!connection.listen-for(session-ready => {
             say 'connected!';
             $!connection.join-room('test@conference.localhost');
         });
 
         $!connection.listen-for(muc-message => -> $room, $msg, $is-echo {
-            unless $msg.is-delayed {
-                say $msg.body;
+            # XXX return if
+            unless $msg.is-delayed || $is-echo {
+                self.*process-message($msg);
             }
+        });
+
+        $!connection.listen-for(message => -> $msg {
+            self.*process-message($msg);
         });
 
         $!connection.connect;
@@ -35,6 +36,10 @@ class Hexe {
     method run {
         $!loop.go;
     }
+
+    # no-op
+    # intended to be overridden by plugins
+    method process-message(Hexe::Stanza::Message $msg) {}
 
     method !connection-config {
         my $config-file = 'config.json';
