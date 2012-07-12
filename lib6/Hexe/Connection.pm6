@@ -45,6 +45,20 @@ class Hexe::Connection {
         self!send-command('join-room', 'name', $room-name);
     }
 
+    method send(Hexe::Stanza::Message $msg) {
+        my %payload;
+
+        %payload<type> = $msg.type;
+        %payload<from> = $msg.from.Str;
+        %payload<to>   = $msg.to.Str;
+        %payload<body> = $msg.body;
+
+        my $payload = %payload;
+
+        # XXX how do I just pass in %payload?
+        self!send-command('send_message', $payload);
+    }
+
     method !send-command(Str $name, *@args) {
         my $cmd = Hexe::Connection::IPCMessage.new(:command($name), :@args);
         $cmd.write($!sock);
