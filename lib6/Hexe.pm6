@@ -5,7 +5,7 @@ use Hexe::Connection;
 use JSON::Tiny;
 
 class Hexe {
-    has $!connection;
+    has $.connection;
     has $!loop;
 
     submethod BUILD {
