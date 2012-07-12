@@ -154,6 +154,10 @@ class Hexe::Stanza::Message does StanzaLike {
     method is-delayed {
         return $!delay.defined;
     }
+
+    method make-reply {
+        return Hexe::Stanza::Message.new(:type($.type), :to($.from), :from($.to));
+    }
 }
 
 class Hexe::Stanza {
