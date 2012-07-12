@@ -104,7 +104,14 @@ class Hexe::Stanza::Message does StanzaLike {
     has DateTime $.delay;
     has Str $.body;
 
-    method new(%obj) {
+    # the difference between the two new invocations
+    # is subtle; one allows .new(:from(...), ...),
+    # the other allows .new(%xml-node)
+    multi method new(*%params) {
+        return self.bless(*, |%params);
+    }
+
+    multi method new(%obj) {
         my %params = :type(%obj<type>), :from(%obj<from>), :to(%obj<to>);
 
         %params<body> = self.find-node(%obj, :_tag<body>)<_text>;
