@@ -98,11 +98,11 @@ my regex delay-regex {
 }
 
 class Hexe::Stanza::Message does StanzaLike {
-    has Hexe::Stanza::Message::Type $.type;
-    has Hexe::JID $.from;
-    has Hexe::JID $.to;
+    has Hexe::Stanza::Message::Type $.type is rw;
+    has Hexe::JID $.from is rw;
+    has Hexe::JID $.to is rw;
     has DateTime $.delay;
-    has Str $.body;
+    has Str $.body is rw;
 
     # the difference between the two new invocations
     # is subtle; one allows .new(:from(...), ...),
