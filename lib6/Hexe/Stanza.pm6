@@ -165,7 +165,14 @@ class Hexe::Stanza::Message does StanzaLike {
     }
 
     method make-reply {
-        return Hexe::Stanza::Message.new(:type($.type), :to($.from), :from($.to));
+        my $from = $.to;
+        my $to   = $.from;
+
+        if $.type eq 'groupchat' {
+            $to          = $to.clone;
+            $to.resource = Str;
+        }
+        return Hexe::Stanza::Message.new(:type($.type), :to($to), :from($from));
     }
 }
 
