@@ -138,9 +138,18 @@ class Hexe::Stanza::Message does StanzaLike {
         return self.bless(*, |%params);
     }
 
-    submethod BUILD(:$!type, Str :$from, Str :$to, Str :$!body, DateTime :$!delay) {
-        $!from = Hexe::JID.from-string($from);
-        $!to   = Hexe::JID.from-string($to);
+    submethod BUILD(:$!type, :$from, :$to, Str :$!body, DateTime :$!delay) {
+        if $from ~~ Str {
+            $!from = Hexe::JID.from-string($from);
+        } else {
+            $!from = $from;
+        }
+
+        if $to ~~ Str {
+            $!to = Hexe::JID.from-string($to);
+        } else {
+            $!to = $to;
+        }
     }
 
     method gist {
