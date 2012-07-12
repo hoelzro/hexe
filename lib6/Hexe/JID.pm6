@@ -4,9 +4,9 @@ my regex resource-part { <-[/]>+ };
 my regex jid-regex { [ <node-part> '@' ]? <domain-part> [ '/' <resource-part> ]? };
 
 class Hexe::JID {
-    has Str $!node;
-    has Str $!domain;
-    has Str $!resource;
+    has Str $.node     is rw;
+    has Str $.domain   is rw;
+    has Str $.resource is rw;
 
     method from-string(Str $string) {
         my %attrs;
