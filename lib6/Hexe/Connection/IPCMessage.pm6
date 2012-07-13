@@ -40,7 +40,7 @@ class Hexe::Connection::IPCMessage {
         return %!message;
     }
 
-    method !encoded-length(Int $length is copy) {
+    method !encoded-length(Int $length is copy) returns Buf {
         my @chars;
 
         for ( 1 .. 4 ) {
@@ -52,7 +52,7 @@ class Hexe::Connection::IPCMessage {
         return @chars.join('').encode;
     }
 
-    method !decoded-length(Str $length) {
+    method !decoded-length(Buf $length) {
         my $num = 0;
 
         for $length.ords -> $ord {
