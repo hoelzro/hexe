@@ -26,6 +26,10 @@ class Hexe {
             }
         });
 
+        # XXX passing a raw pair? a raw hash? (anonymous)
+        # XXX can you splat a $pair into a hash for arguments?
+        # XXX can you splat $hash?
+        # XXX can we make => -> more concise?
         $!connection.listen-for(message => -> $msg {
             self.*process-message($msg);
         });

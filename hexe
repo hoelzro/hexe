@@ -8,6 +8,7 @@ use Hexe::Plugin::Echo;
 
 my $bot = Hexe.new;
 
+# XXX don't hardcode list of plugins!
 $bot does Hexe::Plugin::Echo;
 
 $bot.run;

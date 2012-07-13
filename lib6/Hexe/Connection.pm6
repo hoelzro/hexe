@@ -6,6 +6,7 @@ class Hexe::Connection {
     has $!loop;
     has $!sock;
 
+    # XXX is this redundant?
     method new(*%params) {
         return self.bless(*, |%params);
     }
@@ -87,7 +88,7 @@ class Hexe::Connection {
         my $callbacks = %!callbacks{$signal-name};
 
         for $callbacks.list -> $callback {
-            $callback.(|@payload.list);
+            $callback.(|@payload.list); # XXX
         }
     }
 }

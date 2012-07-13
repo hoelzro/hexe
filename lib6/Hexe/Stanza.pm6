@@ -1,6 +1,7 @@
 use Hexe::JID;
 
 my role StanzaLike {
+    # XXX private method in a role
     method find-node(%node, *%search-params) returns Hash {
         my $all-matching = True;
 
@@ -28,6 +29,7 @@ my role StanzaLike {
     }
 }
 
+# XXX build junctions with a list?
 subset Hexe::Stanza::Presence::Type of Str where 'available'|'error'|'subscribe'|'subscribed'|'unavailable'|'unsubscribe'|'unsubscribed';
 subset Hexe::Stanza::Presence::Availability of Str where 'away'|'chat'|'dnd'|'xa';
 subset Hexe::Stanza::Presence::Priority of Int where -128 .. 127;
@@ -54,10 +56,12 @@ class Hexe::Stanza::Presence does StanzaLike {
     }
 
     submethod BUILD(:$!type, Str :$from, :$!availability, :$!status, :$!priority) {
+        # XXX can we coerce $from in the signature?
         $!from = Hexe::JID.from-string($from);
     }
 
     method gist {
+        # XXX make this smarter
         if self.defined {
             my @pieces = ("type='$!type'", "from='$!from'");
 

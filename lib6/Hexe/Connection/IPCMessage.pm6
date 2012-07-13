@@ -4,7 +4,7 @@ use JSON::Tiny;
 
 class Hexe::Connection::IPCMessage {
     constant @base64-chars   = ( ('A' .. 'Z' ), ('a' .. 'z'), ('0' .. '9'), '+', '/');
-    constant %base64-mapping = (map -> $value { @base64-chars[$value].ord => $value }, |(0 .. ^@base64-chars.elems -1).flat).hash;
+    constant %base64-mapping = (map -> $value { @base64-chars[$value].ord => $value }, |(0 .. ^@base64-chars.elems -1).flat).hash; # XXX
 
     has %!message;
 
@@ -44,7 +44,7 @@ class Hexe::Connection::IPCMessage {
         my @chars;
 
         for ( 1 .. 4 ) {
-            my $value = $length +& 0x3f;
+            my $value = $length +& 0x3f; # XXX
             @chars.unshift(@base64-chars[$value]);
             $length +>= 6;
         }

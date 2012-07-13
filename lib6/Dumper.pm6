@@ -16,7 +16,7 @@ multi dump(Array:D $a, Int $indent = 0) {
     my @parts;
 
     @parts.push("[\n");
-    for $a.list -> $elem {
+    for $a.list -> $elem { # XXX
         @parts.push(dump($elem, $indent + 1));
         @parts.push(",\n");
     }

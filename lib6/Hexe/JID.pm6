@@ -3,6 +3,8 @@ my regex domain-part { .+? };
 my regex resource-part { <-[/]>+ };
 my regex jid-regex { [ <node-part> '@' ]? <domain-part> [ '/' <resource-part> ]? };
 
+# XXX do { local $var; ... }
+
 class Hexe::JID {
     has Str $.node     is rw;
     has Str $.domain   is rw;
