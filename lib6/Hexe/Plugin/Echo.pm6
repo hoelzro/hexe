@@ -7,11 +7,12 @@ role Hexe::Plugin::Echo {
             $reply.body = $msg.body;
             $.connection.send($reply);
         } elsif $msg.type eq 'groupchat' {
-            my $body = $msg.body;
-            return unless $body ~~ /^ "$me" <[:,]>/;
+            my $match = $msg.body ~~ /^ $me <[:,]>\s*(.*)/;
+            return unless $match;
+
             my $sender  = $msg.from.resource;
             my $reply   = $msg.make-reply;
-            $reply.body = "$sender: {$msg.body}";
+            $reply.body = "$sender: $match[0]";
             $.connection.send($reply);
         }
     }
