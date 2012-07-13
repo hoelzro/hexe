@@ -48,9 +48,9 @@ class Hexe::Stanza::Presence does StanzaLike {
             %params<type> = 'available';
         }
 
-        %params<availability> = self.find-node(%obj, :_tag<show>)<_text>         || Hexe::Stanza::Presence::Availability;
+        %params<availability> = self.find-node(%obj, :_tag<show>)<_text>         || 'available';
         %params<status>       = self.find-node(%obj, :_tag<status>)<_text>       || Str;
-        %params<priority>     = self.find-node(%obj, :_tag<priority>)<_text>.Int || Hexe::Stanza::Presence::Priority;
+        %params<priority>     = self.find-node(%obj, :_tag<priority>)<_text>.Int || 0;
 
         return self.bless(*, |%params);
     }
