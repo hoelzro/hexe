@@ -37,6 +37,10 @@ class Hexe {
         $!loop.go;
     }
 
+    method nickname {
+        return 'bot';
+    }
+
     # no-op
     # intended to be overridden by plugins
     method process-message(Hexe::Stanza::Message $msg) {}
