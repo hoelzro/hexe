@@ -26,7 +26,7 @@ class Hexe::Connection::IPCMessage {
     }
 
     method read($h) {
-        my $length = $h.read(4).decode;
+        my $length = $h.read(4);
            $length = self!decoded-length($length);
 
         my $body   = $h.read($length).decode;
@@ -55,8 +55,8 @@ class Hexe::Connection::IPCMessage {
     method !decoded-length(Buf $length) {
         my $num = 0;
 
-        for $length.ords -> $ord {
-            my $value = %base64-mapping{$ord};
+        loop (my $i = 0; $i < $length.elems; $i++) {
+            my $value = %base64-mapping{$length[$i]};
             $num +<= 6;
             $num +|= $value;
         }
