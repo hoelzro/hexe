@@ -38,6 +38,8 @@ class Hexe {
     }
 
     method run {
+        self.*init();
+
         $!loop.go;
     }
 
@@ -48,6 +50,10 @@ class Hexe {
     # no-op
     # intended to be overridden by plugins
     method process-message(Hexe::Stanza::Message $msg) {}
+
+    # no-op
+    # intended to be overridden by plugins
+    method init {}
 
     method !connection-config {
         my $config-file = 'config.json';
