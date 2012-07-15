@@ -210,6 +210,18 @@ sub _get_converter {
     return unless $type;
     return if $type eq 'ARRAY' || $type eq 'HASH';
 
+    if($type->isa('AnyEvent::XMPP::Ext::MUC::User')) {
+        return sub {
+            my ( $self, $user ) = @_;
+
+            return {
+                _type => 'User',
+                nick  => $user->nick,
+                jid   => $user->in_room_jid,
+            };
+        };
+    }
+
     if($type->isa('AnyEvent::XMPP::IM::Delayed')) {
         return sub {
             my ( $self, $delayed ) = @_;
