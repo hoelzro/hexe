@@ -33,12 +33,12 @@ class Hexe {
         $!connection.listen-for(message => -> $msg {
             self.*process-message($msg);
         });
-
-        $!connection.connect;
     }
 
     method run {
         self.*init();
+
+        $!connection.connect;
 
         $!loop.go;
     }
