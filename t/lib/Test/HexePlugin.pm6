@@ -40,14 +40,6 @@ class Test::HexePlugin {
     has @!plugins;
 
     submethod BUILD(:@!plugins, *%params) {
-        if %params.exists('send-prefix') && %params<send-prefix> ne '> ' {
-            die q{You can't override send-prefix yet =(};
-        }
-
-        if %params.exists('recv-prefix') && %params<recv-prefix> ne '< ' {
-            die q{You can't override recv-prefix yet =(};
-        }
-
         $!test-object = FakeBot.new(
             :nickname(%params<bot-nick> // 'hexe'),
         );
@@ -97,8 +89,7 @@ class Test::HexePlugin {
     }
 
     method !get-sent(@strings) {
-        # XXX regex interpolation is currently broken
-        my $re = regex { ^ '> ' };
+        my $re = regex { ^ <$!send-prefix> };
 
         return @strings.grep({
             $_ ~~ $re;
@@ -108,8 +99,7 @@ class Test::HexePlugin {
     }
 
     method !get-received(@strings) {
-        # XXX regex interpolation is currently broken
-        my $re = regex { ^ '< ' };
+        my $re = regex { ^ <$!recv-prefix> };
 
         return @strings.grep({
             $_ ~~ $re;
