@@ -5,10 +5,12 @@ use lib 'lib6';
 
 use Hexe;
 use Hexe::Plugin::Echo;
+use Hexe::Plugin::Karma;
 
 my $bot = Hexe.new;
 
 # XXX don't hardcode list of plugins!
 $bot does Hexe::Plugin::Echo;
+$bot does Hexe::Plugin::Karma;
 
 $bot.run;
