@@ -1,7 +1,6 @@
 use v6;
 
 use Test;
-use Hexe::Plugin::Echo;
 use Hexe::EventLoop;
 use Hexe::Stanza;
 
