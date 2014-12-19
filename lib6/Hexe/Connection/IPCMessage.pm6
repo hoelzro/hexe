@@ -9,7 +9,7 @@ class Hexe::Connection::IPCMessage {
     has %!message;
 
     method new(*%args) {
-        return self.bless(*, :message(%args));
+        return self.bless(:message(%args));
     }
 
     submethod BUILD(:%!message) {}
@@ -32,7 +32,7 @@ class Hexe::Connection::IPCMessage {
         my $body   = $h.read($length).decode;
            $body   = from-json($body);
 
-        my $result = self.bless(*, :message(%$body));
+        my $result = self.bless(:message(%$body));
         return $result;
     }
 
