@@ -25,7 +25,7 @@ class Hexe::Connection {
 
     method listen-for(*%args) {
         for %args.pairs>>.kv -> $signal-name, $callback {
-            unless %!callbacks.exists($signal-name) {
+            unless %!callbacks{$signal-name}:exists {
                 %!callbacks{$signal-name} = [];
             }
             %!callbacks{$signal-name}.push($callback);
@@ -61,7 +61,8 @@ class Hexe::Connection {
     }
 
     method !convert-payload($obj) {
-        if $obj ~~ Hash && $obj.exists('_type') {
+        # XXX can we do this with :exists?
+        if $obj ~~ Hash && $obj.exists_key('_type') {
             given $obj<_type> {
                 when 'Stanza' {
                     return Hexe::Stanza.create($obj);
