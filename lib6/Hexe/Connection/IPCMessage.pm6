@@ -19,7 +19,7 @@ class Hexe::Connection::IPCMessage {
     }
 
     method write($h) {
-        my $buf = to-json(%!message).encode;
+        my $buf = to-json(%!message).encode(:encoding<UTF-8>);
 
         my $length = self!encoded-length($buf.bytes);
         $h.write($length ~ $buf);
@@ -29,7 +29,7 @@ class Hexe::Connection::IPCMessage {
         my $length = $h.read(4);
            $length = self!decoded-length($length);
 
-        my $body   = $h.read($length).decode;
+        my $body   = $h.read($length).decode(:encoding<UTF-8>);
            $body   = from-json($body);
 
         my $result = self.bless(:message(%$body));
@@ -40,7 +40,7 @@ class Hexe::Connection::IPCMessage {
         return %!message;
     }
 
-    method !encoded-length(Int $length is copy) returns Buf {
+    method !encoded-length(Int $length is copy) returns utf8 {
         my @chars;
 
         for ( 1 .. 4 ) {
@@ -49,10 +49,10 @@ class Hexe::Connection::IPCMessage {
             $length +>= 6;
         }
 
-        return @chars.join('').encode;
+        return @chars.join('').encode(:encoding<UTF-8>);
     }
 
-    method !decoded-length(Buf $length) {
+    method !decoded-length(utf8 $length) {
         my $num = 0;
 
         loop (my $i = 0; $i < $length.elems; $i++) {
