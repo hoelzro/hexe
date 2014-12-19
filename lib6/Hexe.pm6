@@ -9,7 +9,7 @@ class Hexe {
     has $!loop;
 
     submethod BUILD {
-        my %config    = self!connection-config;
+        my %config    = %(self!connection-config);
         $!loop        = Hexe::EventLoop.new;
         %config<loop> = $!loop;
         $!connection  = Hexe::Connection.new(|%config);

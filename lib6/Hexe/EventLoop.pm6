@@ -7,7 +7,7 @@ my $instance;
 class Hexe::EventLoop {
     method new {
         unless $instance.defined {
-            $instance = self.bless(*);
+            $instance = self.bless;
         }
 
         return $instance;
