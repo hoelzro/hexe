@@ -27,24 +27,12 @@ class Hexe::EventLoop {
         }
     }
 
-    method timer(*%params) {
-        if %params.delete('callback') -> $callback {
-            %params{'cb'} = $callback;
-        }
-        unless %params.exists('after') {
-            %params{'after'} = 0;
-        }
-        MuEvent::timer(|%params);
+    method timer(:$after = 0, :callback($cb), *%params) {
+        MuEvent::timer(:$after, :$cb, |%params);
     }
 
-    method io(*%params) {
-        if %params.delete('callback') -> $callback {
-            %params{'cb'} = $callback;
-        }
-        if %params.delete('fh') -> $fh {
-            %params<socket> = $fh;
-        }
-        MuEvent::socket(|%params);
+    method io(:$fh, :callback($cb), *%params) {
+        MuEvent::socket(:$fh, :$cb, |%params);
     }
 
     method stop {
