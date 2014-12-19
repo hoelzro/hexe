@@ -1,0 +1,9 @@
+{
+    "name": "Hexe",
+    "version": "0.1.0",
+    "description": "XMPP chat bot",
+    "author": "Rob Hoelz",
+    "depends": ["MuEvent", "DBIish"],
+    "provides" : {},
+    "source-url": "git://github.com/hoelzro/hexe.git"
+}
