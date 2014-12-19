@@ -31,8 +31,8 @@ class Hexe::EventLoop {
         MuEvent::timer(:$after, :$cb, |%params);
     }
 
-    method io(:$fh, :callback($cb), *%params) {
-        MuEvent::socket(:$fh, :$cb, |%params);
+    method io(:fh($socket), :callback($cb), *%params) {
+        MuEvent::socket(:$socket, :$cb, |%params);
     }
 
     method stop {
