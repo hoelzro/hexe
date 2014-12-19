@@ -6,11 +6,6 @@ class Hexe::Connection {
     has $!loop;
     has $!sock;
 
-    # XXX is this redundant?
-    method new(*%params) {
-        return self.bless(*, |%params);
-    }
-
     submethod BUILD(:$!loop, *%extra-params) {
         # XXX it would be nice if this generated dynamic ports
         $!sock = IO::Socket::INET.new(:host<localhost>, :port(9001));
